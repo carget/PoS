@@ -1,4 +1,6 @@
-package com.epam.mishkurov.pos;
+package ua.mishkurov.pos;
+
+import ua.mishkurov.pos.exceptions.CoinManagerException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,11 +8,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Created by Anton_Mishkurov on 9/26/2016.
+ * @author Anton_Mishkurov
  */
-public class CoinFabric {
+public class CoinFactory {
     private static Map<Integer, Coin> allowedCoins;
     private static SortedSet<Coin> sortedCoinsSet;
+
+    private CoinFactory() {}
 
     //a bit hardcode for allowed coins
     static {
@@ -25,24 +29,12 @@ public class CoinFabric {
         sortedCoinsSet.addAll(allowedCoins.values());
     }
 
-    public static Coin getCoin1() {
-        return allowedCoins.get(1);
-    }
-
-    public static Coin getCoin5() {
-        return allowedCoins.get(5);
-    }
-
-    public static Coin getCoin10() {
-        return allowedCoins.get(10);
-    }
-
-    public static Coin getCoin25() {
-        return allowedCoins.get(25);
-    }
-
-    public static Coin getCoin50() {
-        return allowedCoins.get(50);
+    public static Coin getCoin(int value) {
+        Coin coin = allowedCoins.get(value);
+        if (coin == null) {
+            throw new CoinManagerException("This value is not allowed. Value=" + value);
+        }
+        return coin;
     }
 
     public static SortedSet<Coin> getSortedCoins() {

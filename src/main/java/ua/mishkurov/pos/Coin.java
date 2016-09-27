@@ -1,4 +1,4 @@
-package com.epam.mishkurov.pos;
+package ua.mishkurov.pos;
 
 /**
  * Created by Anton_Mishkurov on 9/26/2016.
@@ -29,9 +29,16 @@ public class Coin implements Comparable<Coin> {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return value;
+    }
+
     //to store Coins in reverse order
     @Override
-    public int compareTo(Coin o) {
-        return o.getValue() - this.value;
+    public int compareTo(Coin other) {
+        return other.getValue() - this.value;
     }
+
+
 }

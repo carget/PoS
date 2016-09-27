@@ -1,8 +1,11 @@
-package com.epam.mishkurov.pos;
+package ua.mishkurov.pos;
+
+import ua.mishkurov.pos.exceptions.CoinManagerException;
 
 import java.util.*;
 
 /**
+ *
  * Created by Anton_Mishkurov on 9/26/2016.
  */
 public class CoinManager {
@@ -12,6 +15,7 @@ public class CoinManager {
     private Map<Coin, Integer> allCoins;
 
     public CoinManager() {
+        allCoins = new HashMap<>();
         for (Coin c : getAllowedCoins()) {
             allCoins.put(c, INITIAL_COIN_QUANTITY);
         }
@@ -22,27 +26,29 @@ public class CoinManager {
             throw new IllegalArgumentException("Change cannot be negative. Change=" + changeValue);
         }
         List<Coin> change = new ArrayList<>();
-        while (changeValue != 0) {
-            for (Coin c : CoinFabric.getSortedCoins()) {
-                if (changeValue < c.getValue()) {
-                    continue;
-                }
+        for (Coin c : CoinFactory.getSortedCoins()) {
+            while (changeValue >= c.getValue() && changeValue != 0) {
                 if (allCoins.get(c) > 0) {
                     change.add(c);
                     allCoins.put(c, allCoins.get(c) - 1);  //decrease coins quantity
                     changeValue -= c.getValue();
+                } else {
+                    break;
                 }
             }
+        }
+        if (changeValue > 0) {
+            throw new CoinManagerException("Cannot give change due lack of coins in the machine. Not returned change=" + changeValue);
         }
         return change;
     }
 
     public Set<Coin> getAllowedCoins() {
-        return CoinFabric.getSortedCoins();
+        return CoinFactory.getSortedCoins();
     }
 
     public void putCoin(Coin coin) {
-        if (!CoinFabric.getSortedCoins().contains(coin)) {
+        if (!CoinFactory.getSortedCoins().contains(coin)) {
             throw new IllegalArgumentException("This Coin does not allowed! Value=" + coin.getValue());
         }
         allCoins.put(coin, allCoins.get(coin) + 1);
