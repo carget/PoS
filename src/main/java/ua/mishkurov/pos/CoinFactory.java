@@ -37,7 +37,7 @@ public class CoinFactory {
         return coin;
     }
 
-    public static SortedSet<Coin> getSortedCoins() {
+    public static SortedSet<Coin> getSortedCoinsInReverseOrder() {
         return sortedCoinsSet;
     }
 

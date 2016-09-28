@@ -5,7 +5,8 @@ import ua.mishkurov.pos.exceptions.ProductManagerException;
 import java.util.*;
 
 /**
- * Created by Anton_Mishkurov on 9/27/2016.
+ *
+ * @author Anton_Mishkurov
  */
 public class ProductFactory {
 

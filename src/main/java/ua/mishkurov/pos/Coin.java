@@ -1,7 +1,8 @@
 package ua.mishkurov.pos;
 
 /**
- * Created by Anton_Mishkurov on 9/26/2016.
+ *
+ * @author Anton_Mishkurov
  */
 public class Coin implements Comparable<Coin> {
 

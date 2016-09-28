@@ -1,12 +1,13 @@
 package ua.mishkurov.pos;
 
 /**
- * Created by Anton_Mishkurov on 9/27/2016.
+ *
+ * @author Anton_Mishkurov
  */
 public class Product {
-    private final int id;
+    private int id;
     private String name;
-    private final int price;
+    private int price;
 
     public Product(int id, String name, int price) {
         this.id = id;

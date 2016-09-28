@@ -5,13 +5,11 @@ import java.util.*;
 
 /**
  * @author Anton_Mishkurov
- * @since 9/26/2016.
  */
 public class PoS {
     private CoinManager coinManager;
     private ProductManager productManager;
     private List<Sale> saleList;
-
     private int deposit;
     private Map<Product, Integer> chosenProducts;
 
@@ -28,14 +26,14 @@ public class PoS {
         coinManager.putCoin(coin);
     }
 
-    public Collection<Coin> cancel() {
+    public Collection<Coin> cancelAndGetChange() {
         saleList = new ArrayList<>();
         List<Coin> change = coinManager.getChange(deposit);
         deposit = 0;
         return change;
     }
 
-    public Collection<Coin> getAllowedCoin() {
+    public Collection<Coin> getAllowedCoins() {
         return coinManager.getAllowedCoins();
     }
 
@@ -43,7 +41,7 @@ public class PoS {
         return productManager.getAvailableProducts();
     }
 
-    public void chooseProduct(Product product) {
+    public void addProductToBasket(Product product) {
         Integer productQuantity = chosenProducts.get(product);
         productQuantity = productQuantity == null ? 0 : productQuantity;
         chosenProducts.put(product, productQuantity + 1);
@@ -57,17 +55,19 @@ public class PoS {
         return saleList;
     }
 
-    public List<Coin> pay() {
+    public List<Coin> checkout() {
         Sale sale = new Sale(LocalDate.now());
         for (Product p : chosenProducts.keySet()) {
             sale.makeLineItem(p, chosenProducts.get(p));
         }
         if (deposit < sale.total()) {
-            System.out.println("Deposit is to low. Insert more coins.");
+            System.out.println("Deposit is to low :-( Insert more coins.");
             return null;
         }
         int changeValue = deposit - sale.total();
         List<Coin> change = coinManager.getChange(changeValue);
+        //decrease number of products in stock
+        //TODO
         deposit = 0;
         chosenProducts = new HashMap<>();
         saleList.add(sale);

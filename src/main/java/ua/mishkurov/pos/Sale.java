@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Anton_Mishkurov on 9/27/2016.
+ *
+ * @author Anton_Mishkurov
  */
 public class Sale {
     private LocalDate date;

@@ -3,7 +3,8 @@ package ua.mishkurov.pos;
 import java.util.*;
 
 /**
- * Created by Anton_Mishkurov on 9/26/2016.
+ *
+ * @author Anton_Mishkurov
  */
 public class Main {
     private static Set<String> allowedCommands;
@@ -13,8 +14,8 @@ public class Main {
             add("listProducts");
             add("listAllowedCoins");
             add("insertCoin");
-            add("pay");
-            add("cancel");
+            add("checkout");
+            add("cancelAndGetChange");
             add("selectProduct");
             add("getSalesList");
             add("quit");
@@ -26,6 +27,7 @@ public class Main {
 
         while (true) {
             System.out.println("Enter command:");
+            printAllowedCommands();
             String command = sc.nextLine();
             if (!allowedCommands.contains(command)) {
                 System.out.println("Enter allowed command");
@@ -37,18 +39,18 @@ public class Main {
                     System.out.println(pos.getAvailableProducts());
                     break;
                 case "listAllowedCoins":
-                    System.out.println(pos.getAllowedCoin());
+                    System.out.println(pos.getAllowedCoins());
                     break;
                 case "insertCoin":
                     insertCoinCommand(sc, pos);
                     break;
-                case "pay":
-                    payCommand(pos);
+                case "checkout":
+                    checkoutCommand(pos);
                     break;
                 case "getSalesList":
                     System.out.println(pos.getSalesList());
                     break;
-                case "cancel":
+                case "cancelAndGetChange":
                     cancelCommand(pos);
                     break;
                 case "selectProduct":
@@ -69,7 +71,7 @@ public class Main {
         System.out.println("Enter product id: ");
         Product productById = ProductFactory.getProductById(sc.nextInt());
         System.out.println("You've selected product:" + productById);
-        pos.chooseProduct(productById);
+        pos.addProductToBasket(productById);
     }
 
     private static void insertCoinCommand(Scanner sc, PoS pos) {
@@ -78,8 +80,8 @@ public class Main {
         System.out.println("Your deposit: " + pos.getDeposit());
     }
 
-    private static void payCommand(PoS pos) {
-        List<Coin> change = pos.pay();
+    private static void checkoutCommand(PoS pos) {
+        List<Coin> change = pos.checkout();
         if (change == null) {
             System.out.println("Your deposit is:" + pos.getDeposit());
         } else {
@@ -90,7 +92,7 @@ public class Main {
     private static void cancelCommand(PoS pos) {
         System.out.println("Canceling...");
         System.out.println("Yor change:");
-        Collection<Coin> change = pos.cancel();
+        Collection<Coin> change = pos.cancelAndGetChange();
         System.out.println(change);
     }
 

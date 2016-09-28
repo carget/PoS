@@ -6,18 +6,18 @@ import java.util.*;
 
 /**
  *
- * Created by Anton_Mishkurov on 9/26/2016.
+ * @author Anton_Mishkurov
  */
 public class CoinManager {
 
     private static final int INITIAL_COIN_QUANTITY = 100;
 
-    private Map<Coin, Integer> allCoins;
+    private Map<Coin, Integer> coinRemainder;
 
     public CoinManager() {
-        allCoins = new HashMap<>();
+        coinRemainder = new HashMap<>();
         for (Coin c : getAllowedCoins()) {
-            allCoins.put(c, INITIAL_COIN_QUANTITY);
+            coinRemainder.put(c, INITIAL_COIN_QUANTITY);
         }
     }
 
@@ -26,11 +26,11 @@ public class CoinManager {
             throw new IllegalArgumentException("Change cannot be negative. Change=" + changeValue);
         }
         List<Coin> change = new ArrayList<>();
-        for (Coin c : CoinFactory.getSortedCoins()) {
+        for (Coin c : CoinFactory.getSortedCoinsInReverseOrder()) {
             while (changeValue >= c.getValue() && changeValue != 0) {
-                if (allCoins.get(c) > 0) {
+                if (coinRemainder.get(c) > 0) {
                     change.add(c);
-                    allCoins.put(c, allCoins.get(c) - 1);  //decrease coins quantity
+                    coinRemainder.put(c, coinRemainder.get(c) - 1);  //decrease coins quantity
                     changeValue -= c.getValue();
                 } else {
                     break;
@@ -38,20 +38,20 @@ public class CoinManager {
             }
         }
         if (changeValue > 0) {
-            throw new CoinManagerException("Cannot give change due lack of coins in the machine. Not returned change=" + changeValue);
+            throw new CoinManagerException("Cannot give change due lack of coins in the machine's tray. Not returned change=" + changeValue);
         }
         return change;
     }
 
     public Set<Coin> getAllowedCoins() {
-        return CoinFactory.getSortedCoins();
+        return CoinFactory.getSortedCoinsInReverseOrder();
     }
 
     public void putCoin(Coin coin) {
-        if (!CoinFactory.getSortedCoins().contains(coin)) {
+        if (!CoinFactory.getSortedCoinsInReverseOrder().contains(coin)) {
             throw new IllegalArgumentException("This Coin does not allowed! Value=" + coin.getValue());
         }
-        allCoins.put(coin, allCoins.get(coin) + 1);
+        coinRemainder.put(coin, coinRemainder.get(coin) + 1);
     }
 
 }

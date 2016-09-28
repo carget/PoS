@@ -1,7 +1,8 @@
 package ua.mishkurov.pos.exceptions;
 
 /**
- * Created by Anton_Mishkurov on 9/27/2016.
+ *
+ * @author Anton_Mishkurov
  */
 public class CoinManagerException extends RuntimeException {
 
