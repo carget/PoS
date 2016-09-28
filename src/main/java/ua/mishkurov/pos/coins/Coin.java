@@ -1,4 +1,4 @@
-package ua.mishkurov.pos;
+package ua.mishkurov.pos.coins;
 
 /**
  *

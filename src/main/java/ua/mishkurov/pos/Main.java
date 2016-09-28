@@ -1,5 +1,10 @@
 package ua.mishkurov.pos;
 
+import ua.mishkurov.pos.coins.Coin;
+import ua.mishkurov.pos.coins.CoinFactory;
+import ua.mishkurov.pos.products.Product;
+import ua.mishkurov.pos.products.ProductFactory;
+
 import java.util.*;
 
 /**

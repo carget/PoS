@@ -1,4 +1,6 @@
-package ua.mishkurov.pos;
+package ua.mishkurov.pos.sales;
+
+import ua.mishkurov.pos.products.Product;
 
 /**
  *
