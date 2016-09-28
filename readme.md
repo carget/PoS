@@ -1,4 +1,4 @@
-### PoS - Point of service
+### PoS - Point of sale
 
 ##### ___Requirements___:
 
