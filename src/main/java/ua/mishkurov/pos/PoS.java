@@ -1,5 +1,11 @@
 package ua.mishkurov.pos;
 
+import ua.mishkurov.pos.coins.Coin;
+import ua.mishkurov.pos.coins.CoinManager;
+import ua.mishkurov.pos.products.Product;
+import ua.mishkurov.pos.products.ProductManager;
+import ua.mishkurov.pos.sales.Sale;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -11,13 +17,13 @@ public class PoS {
     private ProductManager productManager;
     private List<Sale> saleList;
     private int deposit;
-    private Map<Product, Integer> chosenProducts;
+    private Map<Product, Integer> basket;
 
     public PoS() {
         coinManager = new CoinManager();
         productManager = new ProductManager();
         saleList = new ArrayList<>();
-        chosenProducts = new HashMap<>();
+        basket = new HashMap<>();
         deposit = 0;
     }
 
@@ -42,9 +48,9 @@ public class PoS {
     }
 
     public void addProductToBasket(Product product) {
-        Integer productQuantity = chosenProducts.get(product);
+        Integer productQuantity = basket.get(product);
         productQuantity = productQuantity == null ? 0 : productQuantity;
-        chosenProducts.put(product, productQuantity + 1);
+        basket.put(product, productQuantity + 1);
     }
 
     public int getDeposit() {
@@ -57,8 +63,8 @@ public class PoS {
 
     public List<Coin> checkout() {
         Sale sale = new Sale(LocalDate.now());
-        for (Product p : chosenProducts.keySet()) {
-            sale.makeLineItem(p, chosenProducts.get(p));
+        for (Product p : basket.keySet()) {
+            sale.makeLineItem(p, basket.get(p));
         }
         if (deposit < sale.total()) {
             System.out.println("Deposit is to low :-( Insert more coins.");
@@ -69,7 +75,7 @@ public class PoS {
         //decrease number of products in stock
         //TODO
         deposit = 0;
-        chosenProducts = new HashMap<>();
+        basket = new HashMap<>();
         saleList.add(sale);
         return change;
     }
