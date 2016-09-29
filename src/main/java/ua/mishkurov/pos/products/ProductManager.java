@@ -1,5 +1,7 @@
 package ua.mishkurov.pos.products;
 
+import ua.mishkurov.pos.exceptions.ProductManagerException;
+
 import java.util.*;
 
 /**
@@ -31,10 +33,19 @@ public class ProductManager {
         return result;
     }
 
-    public void getProduct(Product product) {
-        Integer currentProductRemainder = productRemainder.get(product);
-        currentProductRemainder = currentProductRemainder == null ? 0 : currentProductRemainder;
-        productRemainder.put(product, currentProductRemainder - 1);
+    public void decreaseProductsAmountInStock(Map<Product, Integer> basket) {
+        for (Product p : basket.keySet()) {
+            Integer currentProductRemainder = productRemainder.get(p);
+            currentProductRemainder = currentProductRemainder == null ? 0 : currentProductRemainder;
+            Integer basketProductQty = basket.get(p);
+            basketProductQty = basketProductQty == null ? 0 : basketProductQty;
+            Integer newRemainder = currentProductRemainder - basketProductQty;
+            if (newRemainder < 0) {
+                throw new ProductManagerException("You cannot buy more products than available! " +
+                        "Product remainder=" + newRemainder);
+            }
+        }
+
     }
 
 }

@@ -72,8 +72,7 @@ public class PoS {
         }
         int changeValue = deposit - sale.total();
         List<Coin> change = coinManager.getChange(changeValue);
-        //decrease number of products in stock
-        //TODO
+        productManager.decreaseProductsAmountInStock(basket);
         deposit = 0;
         basket = new HashMap<>();
         saleList.add(sale);
