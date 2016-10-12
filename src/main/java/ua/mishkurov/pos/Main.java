@@ -27,7 +27,7 @@ public class Main {
             add("help");
         }};
 
-        PoS pos = new PoS();
+        Pos pos = new SimplePos();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -71,7 +71,7 @@ public class Main {
         }
     }
 
-    private static void selectProductCommand(Scanner sc, PoS pos) {
+    private static void selectProductCommand(Scanner sc, Pos pos) {
         System.out.println(pos.getAvailableProducts());
         System.out.println("Enter product id: ");
         Product productById = ProductFactory.getProductById(sc.nextInt());
@@ -79,13 +79,13 @@ public class Main {
         pos.addProductToBasket(productById);
     }
 
-    private static void insertCoinCommand(Scanner sc, PoS pos) {
+    private static void insertCoinCommand(Scanner sc, Pos pos) {
         System.out.println("Enter coin's value:");
         pos.insertCoin(CoinFactory.getCoin(sc.nextInt()));
         System.out.println("Your deposit: " + pos.getDeposit());
     }
 
-    private static void checkoutCommand(PoS pos) {
+    private static void checkoutCommand(Pos pos) {
         List<Coin> change = pos.checkout();
         if (change == null) {
             System.out.println("Your deposit is:" + pos.getDeposit());
@@ -94,7 +94,7 @@ public class Main {
         }
     }
 
-    private static void cancelCommand(PoS pos) {
+    private static void cancelCommand(Pos pos) {
         System.out.println("Canceling...");
         System.out.println("Yor change:");
         Collection<Coin> change = pos.cancelAndGetChange();

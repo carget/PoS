@@ -12,14 +12,14 @@ import java.util.*;
 /**
  * @author Anton_Mishkurov
  */
-public class PoS {
+public class SimplePos implements Pos {
     private CoinManager coinManager;
     private ProductManager productManager;
     private List<Sale> saleList;
     private int deposit;
     private Map<Product, Integer> basket;
 
-    public PoS() {
+    public SimplePos() {
         coinManager = new CoinManager();
         productManager = new ProductManager();
         saleList = new ArrayList<>();
@@ -27,11 +27,13 @@ public class PoS {
         deposit = 0;
     }
 
+    @Override
     public void insertCoin(Coin coin) {
         deposit += coin.getValue();
         coinManager.putCoin(coin);
     }
 
+    @Override
     public Collection<Coin> cancelAndGetChange() {
         saleList = new ArrayList<>();
         List<Coin> change = coinManager.getChange(deposit);
@@ -39,28 +41,34 @@ public class PoS {
         return change;
     }
 
+    @Override
     public Collection<Coin> getAllowedCoins() {
         return coinManager.getAllowedCoins();
     }
 
+    @Override
     public Collection<Product> getAvailableProducts() {
         return productManager.getAvailableProducts();
     }
 
+    @Override
     public void addProductToBasket(Product product) {
         Integer productQuantity = basket.get(product);
         productQuantity = productQuantity == null ? 0 : productQuantity;
         basket.put(product, productQuantity + 1);
     }
 
+    @Override
     public int getDeposit() {
         return deposit;
     }
 
+    @Override
     public List<Sale> getSalesList() {
         return saleList;
     }
 
+    @Override
     public List<Coin> checkout() {
         Sale sale = new Sale(LocalDate.now());
         for (Product p : basket.keySet()) {
@@ -77,5 +85,10 @@ public class PoS {
         basket = new HashMap<>();
         saleList.add(sale);
         return change;
+    }
+
+    @Override
+    public Map<Product, Integer> getBasket() {
+        return basket;
     }
 }
